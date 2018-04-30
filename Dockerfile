@@ -7,6 +7,15 @@ RUN apt install -y curl
 RUN apt install -y wget
 RUN apt install -y tar
 
+# For ifconfig
+RUN apt install -y net-tools
+
+# For pyenv & python
+RUN apt install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
+    libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
+    xz-utils tk-dev
+
+
 
 
 
@@ -21,6 +30,9 @@ RUN git config --global user.name "Arturo Avilés"
 ### ZSH http://ohmyz.sh/
 RUN apt install zsh
 RUN sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+# Add these lines to .bashrc
+# export SHELL=/bin/zsh
+# exec /bin/zsh -l
 
 ### VS Code https://code.visualstudio.com/docs/setup/linux
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg && \
@@ -69,6 +81,9 @@ RUN exec $SHELL -l
 
 ### Pyenv
 RUN anyenv install pyenv
+## Get Virtualenv
+RUN git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+RUN echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.zshrc
 
 ### Rbenv
 RUN anyenv install rbenv
